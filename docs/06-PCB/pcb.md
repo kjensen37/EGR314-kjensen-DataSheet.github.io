@@ -3,15 +3,15 @@ title: Module's PCB
 ---
 
 ## PCB
-Below are images of my top and bottom layers of the design of my pcb.
+Below are images of my top and bottom layers of the design of my PCB.
 
 ## Top
 
-![](TopViewEGR314.png)
+![](PCBTop.png)
 
 ## Bottom
 
-![](BottomViewEGR314.png)
+![](PCBBottom.png)
 
 -----------------------------
-You can view the top and bottom layers as a pdf [here](EGR314TopBottomEGR314.pdf), you can also view the gerber and drill files [here](EGR314KJgerber.zip), you can also view the zip file of the project [here](EGR314.zip).
+You can view the top and bottom layers as a PDF [here](Top-combined.pdf), you can also view the Gerber and drill files [here](gerberKJ314.zip), and you can also view the zip file of the project [here](EGR314.zip).
