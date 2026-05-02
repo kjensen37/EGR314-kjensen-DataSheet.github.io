@@ -977,38 +977,196 @@
 <h2 id="overview">Overview</h2>
 <p>My board sends my personal data from my temperature sensor and passes along packet data from previous sensors in the daisy chain, it also receives a "Rollcall" message. Below are all possible messages I will be sending or receiving.</p>
 <h2 id="messages">Messages</h2>
-<p><strong>Send Temperature</strong>
-||<strong>Byte 1</strong> |<strong>Byte 2</strong>|<strong>Byte 3</strong>|<strong>Byte 4</strong>|
-| :-------: | :-------: | :-------: | :-------: | :-------: |
-| Variable Name | Sender_ID | Reciever_ID | Message_Type | Temperature |
-| Variable Type | char | char | uint8_t | uint8_t |
-| Min Value | I | A | 7 | 0 |
-| Max Value | I | A | 7 | 255 |
-| Example | I | A | 7 | 125 | </p>
-<p><strong>Send Distance</strong>
-||<strong>Byte 1</strong> |<strong>Byte 2</strong>|<strong>Byte 3</strong>|<strong>Byte 4</strong>|
-| :-------: | :-------: | :-------: | :-------: | :-------: |
-| Variable Name | Sender_ID | Reciever_ID | Message_Type | Distance |
-| Variable Type | char | char | uint8_t | uint8_t |
-| Min Value | J | A | 6 | 0 |
-| Max Value | J | A | 6 | 255 |
-| Example | J | A | 6 | 125 | </p>
-<p><strong>Send Speed data</strong>
-||<strong>Byte 1</strong> |<strong>Byte 2</strong>|<strong>Byte 3</strong>|<strong>Byte 4</strong>|
-| :-------: | :-------: | :-------: | :-------: | :-------: |
-| Variable Name | Sender_ID | Reciever_ID | Message_Type | Speed |
-| Variable Type | char | char | uint8_t | uint8_t |
-| Min Value | H | A | 5 | 0 |
-| Max Value | H | A | 5 | 255 |
-| Example | H | A | 5 | 125 | </p>
-<p><strong>Rollcall</strong>
-||<strong>Byte 1</strong> |<strong>Byte 2</strong>|<strong>Byte 3</strong>|
-| :-------: | :-------: | :-------: | :-------: |
-| Variable Name | Sender_ID | Reciever_ID | Message_Type |
-| Variable Type | char | char | uint8_t |
-| Min Value | A | X | 12 |
-| Max Value | J | X | 12 |
-| Example | A | J | 12 | </p>
+<p><strong>Send Temperature</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>Byte 1</strong></th>
+<th style="text-align: center;"><strong>Byte 2</strong></th>
+<th style="text-align: center;"><strong>Byte 3</strong></th>
+<th style="text-align: center;"><strong>Byte 4</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Variable Name</td>
+<td style="text-align: center;">Sender_ID</td>
+<td style="text-align: center;">Reciever_ID</td>
+<td style="text-align: center;">Message_Type</td>
+<td style="text-align: center;">Temperature</td>
+</tr>
+<tr>
+<td style="text-align: center;">Variable Type</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">uint8_t</td>
+<td style="text-align: center;">uint8_t</td>
+</tr>
+<tr>
+<td style="text-align: center;">Min Value</td>
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Max Value</td>
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">255</td>
+</tr>
+<tr>
+<td style="text-align: center;">Example</td>
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">125</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Send Distance</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>Byte 1</strong></th>
+<th style="text-align: center;"><strong>Byte 2</strong></th>
+<th style="text-align: center;"><strong>Byte 3</strong></th>
+<th style="text-align: center;"><strong>Byte 4</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Variable Name</td>
+<td style="text-align: center;">Sender_ID</td>
+<td style="text-align: center;">Reciever_ID</td>
+<td style="text-align: center;">Message_Type</td>
+<td style="text-align: center;">Distance</td>
+</tr>
+<tr>
+<td style="text-align: center;">Variable Type</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">uint8_t</td>
+<td style="text-align: center;">uint8_t</td>
+</tr>
+<tr>
+<td style="text-align: center;">Min Value</td>
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Max Value</td>
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">255</td>
+</tr>
+<tr>
+<td style="text-align: center;">Example</td>
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">125</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Send Speed data</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>Byte 1</strong></th>
+<th style="text-align: center;"><strong>Byte 2</strong></th>
+<th style="text-align: center;"><strong>Byte 3</strong></th>
+<th style="text-align: center;"><strong>Byte 4</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Variable Name</td>
+<td style="text-align: center;">Sender_ID</td>
+<td style="text-align: center;">Reciever_ID</td>
+<td style="text-align: center;">Message_Type</td>
+<td style="text-align: center;">Speed</td>
+</tr>
+<tr>
+<td style="text-align: center;">Variable Type</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">uint8_t</td>
+<td style="text-align: center;">uint8_t</td>
+</tr>
+<tr>
+<td style="text-align: center;">Min Value</td>
+<td style="text-align: center;">H</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Max Value</td>
+<td style="text-align: center;">H</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">255</td>
+</tr>
+<tr>
+<td style="text-align: center;">Example</td>
+<td style="text-align: center;">H</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">125</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rollcall</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>Byte 1</strong></th>
+<th style="text-align: center;"><strong>Byte 2</strong></th>
+<th style="text-align: center;"><strong>Byte 3</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Variable Name</td>
+<td style="text-align: center;">Sender_ID</td>
+<td style="text-align: center;">Reciever_ID</td>
+<td style="text-align: center;">Message_Type</td>
+</tr>
+<tr>
+<td style="text-align: center;">Variable Type</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">uint8_t</td>
+</tr>
+<tr>
+<td style="text-align: center;">Min Value</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr>
+<td style="text-align: center;">Max Value</td>
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr>
+<td style="text-align: center;">Example</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">12</td>
+</tr>
+</tbody>
+</table>
 
 
 
