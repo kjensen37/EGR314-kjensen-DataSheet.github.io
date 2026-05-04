@@ -16,8 +16,6 @@ for<br>
 
 ## Introduction
 
-* **This needs to be updated so that a reader gets an idea of the purpose of this datasheet.**
-
 ### Project Summary
 
 * My team and I are developing a remote-controlled aquatic rover that is remotely operated using Bluetooth and can collect data from a number of sensors. Designed mainly to inspect and monitor the hull conditions of various ships, as well as monitor wildlife and patrol routes.
