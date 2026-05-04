@@ -1,0 +1,297 @@
+#include <Wire.h>
+#include <Arduino.h>
+
+
+#define MY_ID 'I'
+
+
+const int LED_ROLECALL = 15;  // Blinks twice on rolecall
+const int LED_BAD_MSG  = 38;  // Flashes on bad message
+
+void blinkRolecall() {
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(LED_ROLECALL, HIGH);
+    delay(150);
+    digitalWrite(LED_ROLECALL, LOW);
+    delay(150);
+  }
+}
+
+void flashBadMsg() {
+  digitalWrite(LED_BAD_MSG, HIGH);
+  delay(80);
+  digitalWrite(LED_BAD_MSG, LOW);
+}
+
+
+//UART 
+
+HardwareSerial MyUART(1);
+const int RX_PIN = 15;
+const int TX_PIN = 16;
+
+const char START_BYTE_1 = 'A';
+const char START_BYTE_2 = 'Z';
+const char END_BYTE_1   = 'Y';
+const char END_BYTE_2   = 'B';
+
+
+//TMP1075
+#define TMP1075_ADDR      0x48
+#define TMP1075_REG_TEMP  0x00   // Temperature register
+
+struct Packet {
+  uint8_t sender;
+  uint8_t receiver;
+  uint8_t type;
+  
+  bool    hasData;
+};
+
+
+void sendPacketStr(uint8_t sender, uint8_t receiver, uint8_t type, const char* dataStr) {
+  MyUART.write(START_BYTE_1);
+  MyUART.write(START_BYTE_2);
+  MyUART.write(sender);
+  MyUART.write(receiver);
+  MyUART.write(type);
+  while (*dataStr) {
+    MyUART.write((uint8_t)*dataStr);
+    dataStr++;
+  }
+  MyUART.write(END_BYTE_1);
+  MyUART.write(END_BYTE_2);
+}
+
+void sendPacket2(uint8_t sender, uint8_t receiver, uint8_t type) {
+  MyUART.write(START_BYTE_1);
+  MyUART.write(START_BYTE_2);
+  MyUART.write(sender);
+  MyUART.write(receiver);
+  MyUART.write(type);
+  MyUART.write(END_BYTE_1);
+  MyUART.write(END_BYTE_2);
+}
+
+
+//UART receive
+
+uint8_t recieveBuffer[20];
+int     bufIndex  = 0;
+int     recBytes  = 0;
+int     endBytes  = 0;
+bool    receiving = false;
+
+
+//Temperature sensor
+
+float readTMP1075() {
+  Wire.beginTransmission(TMP1075_ADDR);
+  Wire.write(TMP1075_REG_TEMP);
+  if (Wire.endTransmission(false) != 0) {
+    Serial.println("TMP1075: I2C error");
+    return -999.0f;
+  }
+
+  Wire.requestFrom((uint8_t)TMP1075_ADDR, (uint8_t)2);
+  if (Wire.available() < 2) {
+    Serial.println("TMP1075: no data");
+    return -999.0f;
+  }
+
+  uint8_t msb = Wire.read();
+  uint8_t lsb = Wire.read();
+
+  int16_t raw = ((int16_t)(msb << 8) | lsb) >> 4;
+
+  return raw * 0.0625f;
+}
+
+
+//Temperature reporting
+
+const unsigned long TEMP_INTERVAL_MS = 5000;
+unsigned long lastTempSend = 0;
+
+//setup()
+
+void setup() {
+  Serial.begin(9600);
+  delay(1000);
+
+  pinMode(LED_ROLECALL, OUTPUT);
+  digitalWrite(LED_ROLECALL, LOW);
+  pinMode(LED_BAD_MSG, OUTPUT);
+  digitalWrite(LED_BAD_MSG, LOW);
+
+  Wire.begin(8, 9, 100000);  // SDA = IO8 (pin 12), SCL = IO9 (pin 17)
+
+  MyUART.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);
+
+  Serial.println("Node I — Temperature board starting up");
+
+  float t = readTMP1075();
+  if (t == -999.0f) {
+    Serial.println("WARNING: TMP1075 not responding on startup!");
+  } else {
+    Serial.printf("TMP1075 OK — startup temp: %.2f C\n", t);
+  }
+}
+
+
+//loop()
+
+void loop() {
+
+
+  unsigned long now = millis();
+  if (now - lastTempSend >= TEMP_INTERVAL_MS) {
+    lastTempSend = now;
+
+    float tempC = readTMP1075();
+    if (tempC != -999.0f) {
+
+      char tempStr[10];
+      snprintf(tempStr, sizeof(tempStr), "%.2f", tempC);
+ 
+      sendPacketStr((uint8_t)MY_ID, (uint8_t)'A', (uint8_t)'G', tempStr);
+      Serial.printf("Sent temp %s C → 'A'\n", tempStr);
+    }
+  }
+
+
+  while (MyUART.available()) {
+    uint8_t byte = MyUART.read();
+
+
+    if (!receiving && recBytes == 0) {
+      if (byte == START_BYTE_1) { recBytes = 1; }
+      continue;
+    }
+
+
+    if (!receiving && recBytes == 1) {
+      if (byte == START_BYTE_2) {
+        receiving = true;
+        bufIndex  = 0;
+        recBytes  = 0;
+        endBytes  = 0;
+        memset(recieveBuffer, 0, sizeof(recieveBuffer));
+      } else {
+        recBytes = 0;  // false alarm, reset
+      }
+      continue;
+    }
+
+
+    if (receiving) {
+
+
+      if (byte == END_BYTE_1 && endBytes == 0) {
+        endBytes = 1;
+        continue;
+      }
+
+
+      if (byte == END_BYTE_2 && endBytes == 1) {
+
+
+        Packet pkt;
+        pkt.sender   = recieveBuffer[0];
+        pkt.receiver = recieveBuffer[1];
+        pkt.type     = recieveBuffer[2];
+        pkt.hasData  = (bufIndex > 3);
+
+ 
+        char dataStr[20] = {0};
+        if (pkt.hasData) {
+          int dataLen = bufIndex - 3;
+          memcpy(dataStr, &recieveBuffer[3], dataLen);
+          dataStr[dataLen] = '\0';
+        }
+
+
+        Serial.printf("PKT  sender=%c  recv=%c  type=%c",
+                      (char)pkt.sender, (char)pkt.receiver, (char)pkt.type);
+        if (pkt.hasData) Serial.printf("  data=%s", dataStr);
+        Serial.println();
+
+        bool validSender = false;
+        for (char id = 'A'; id <= 'J'; id++) {
+          if ((char)pkt.sender == id) { validSender = true; break; }
+        }
+        if (!validSender) {
+          Serial.println("Unknown sender — dropping packet");
+          flashBadMsg();
+          goto reset_rx;
+        }
+
+        if ((char)pkt.sender == MY_ID) {
+          Serial.println("Own packet looped back — dropping");
+          goto reset_rx;
+        }
+
+
+        if ((char)pkt.receiver == MY_ID) {
+          Serial.println("Packet addressed to me!");
+
+          if (pkt.type == (uint8_t)'L') {
+            Serial.println("Rolecall received — responding");
+            blinkRolecall();
+            sendPacket2((uint8_t)MY_ID, pkt.sender, (uint8_t)'L');
+          }
+          
+        }
+
+        else if ((char)pkt.receiver == 'X') {
+          Serial.println("Broadcast packet — processing and forwarding");
+
+          if (pkt.type == (uint8_t)'L') {
+            Serial.println("Rolecall broadcast — sending our rolecall");
+            blinkRolecall();
+            sendPacket2((uint8_t)MY_ID, (uint8_t)'X', (uint8_t)'L');
+          }
+
+          MyUART.write(START_BYTE_1);
+          MyUART.write(START_BYTE_2);
+          for (int e = 0; e < bufIndex; e++) MyUART.write(recieveBuffer[e]);
+          MyUART.write(END_BYTE_1);
+          MyUART.write(END_BYTE_2);
+        }
+
+
+        else {
+          Serial.printf("Forwarding packet (not for me, dest=%c)\n",
+                        (char)pkt.receiver);
+          MyUART.write(START_BYTE_1);
+          MyUART.write(START_BYTE_2);
+          for (int e = 0; e < bufIndex; e++) MyUART.write(recieveBuffer[e]);
+          MyUART.write(END_BYTE_1);
+          MyUART.write(END_BYTE_2);
+        }
+
+        goto reset_rx;
+      }
+
+
+      endBytes = 0;
+
+
+      if (bufIndex >= (int)sizeof(recieveBuffer)) {
+        Serial.println("Buffer overflow — dropping packet");
+        flashBadMsg();
+        goto reset_rx;
+      }
+
+      recieveBuffer[bufIndex++] = byte;
+    }
+
+    continue;
+
+    reset_rx:
+      receiving = false;
+      bufIndex  = 0;
+      recBytes  = 0;
+      endBytes  = 0;
+  }
+}
