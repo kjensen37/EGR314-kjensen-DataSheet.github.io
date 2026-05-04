@@ -11,7 +11,7 @@ as part of<br>
 for<br>
 <font size= "5"> Team 201 </font><br>
 
-**Submission: 3, 6, 2026**
+**Submission: 5, 3, 2026**
 </center>
 
 ## Introduction
@@ -20,13 +20,12 @@ for<br>
 
 ### Project Summary
 
-* This needs to be updated to reflect <ins>your version</ins> of the team project, so when shared not via the team's report, the reader gets an idea of the direction of the project and how your work will contribute to the overall success.
+* My team and I are developing a remote-controlled aquatic rover that is remotely operated using Bluetooth and can collect data from a number of sensors. Designed mainly to inspect and monitor the hull conditions of various ships, as well as monitor wildlife and patrol routes.
 * You can reach my team's project report [here.](https://egr314-s-2026-201.github.io)
 
 ### My Contribution
 
-* This needs to be updated to reflect a team introduction
-* Content should also help an unfamiliar reader navigate to areas of interest. Information like:
+* The purpose of my PCB is to collect temperature data and send it along the daisy chain, as well as pass other data packets sent by previous PCB boards within the chain.
 
 To review the details listed of the material used to construct the subsection, you can review it in the ["BOM"](https://embedded-systems-design.github.io/EGR314DataSheetTemplate/04-BOM/BOM/) section of the datasheet.
 
