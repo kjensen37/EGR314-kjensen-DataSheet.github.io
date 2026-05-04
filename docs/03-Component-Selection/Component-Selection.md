@@ -88,7 +88,7 @@ title: Module's Selected Major Components
     | Wide input range                     | Requires external inductors/caps                                      |
     | EMI-friendly design | Higher complexity vs LDO |
 
-**Rationale:** The voltage regulator I am choosing is #1, the SC189ZSKTRT. The reason being the small footprint for more real estate on the pcb and I think when it comes to a voltage regulator atleast for the scope of my PCB functions, no advanced features are more of pro than a con for simplicity.
+**Rationale:** The voltage regulator I am choosing is #3, the AP63203WU-7. The reason being the small footprint for more real estate on the pcb and I think when it comes to a voltage regulator atleast for the scope of my PCB functions, no advanced features are more of pro than a con for simplicity.
 
 ---------------------
 
