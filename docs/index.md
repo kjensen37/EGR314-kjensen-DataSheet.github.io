@@ -27,7 +27,16 @@ for<br>
 
 * The purpose of my PCB is to collect temperature data and send it along the daisy chain, as well as pass other data packets sent by previous PCB boards within the chain.
 
-To review the details listed of the material used to construct the subsection, you can review it in the ["BOM"](https://embedded-systems-design.github.io/EGR314DataSheetTemplate/04-BOM/BOM/) section of the datasheet.
+To review the requirements of the project, you can review it in the ["Requirements"](https://kjensen37.github.io/01-Requirements/Requirements/) section of the datasheet.
+To review the block diagram, you can review it in the ["Block Diagram"](https://kjensen37.github.io/02-Block-Diagram/Block-Diagram/) section of the datasheet.
+To review the components selected, you can review it in the ["Component Selection"](https://kjensen37.github.io/03-Component-Selection/Component-Selection/) section of the datasheet.
+To review the details listed of the materials used, you can review it in the ["BOM"](https://kjensen37.github.io/04-BOM/BOM/) section of the datasheet.
+To review the schematic design, you can review it in the ["Schematic"](https://kjensen37.github.io/05-Schematic/schematic/) section of the datasheet.
+To review the PCB design, you can review it in the ["PCB"](https://kjensen37.github.io/06-PCB/pcb/) section of the datasheet.
+To review the API formatting, you can review it in the ["API"](https://kjensen37.github.io/06.5%20API/API/) section of the datasheet.
+To review the future design ideas / changes, you can review it in the ["Hardware V2.0"](https://kjensen37.github.io/07-Hardware%20V2.0/hardware/) section of the datasheet.
+To review the code used for the chip, you can review it in the ["Rescources"](https://kjensen37.github.io/08-Rescources/rescources/) section of the datasheet.
+To review my reflection of the project, you can review it in the ["Reflection"](https://kjensen37.github.io/09-Reflection/reflection/) section of the datasheet.
 
 >Continue for all the remaining/missing sections.
 
