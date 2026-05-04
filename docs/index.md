@@ -37,6 +37,3 @@ To review the API formatting, you can review it in the ["API"](https://kjensen37
 To review the future design ideas / changes, you can review it in the ["Hardware V2.0"](https://kjensen37.github.io/07-Hardware%20V2.0/hardware/) section of the datasheet.
 To review the code used for the chip, you can review it in the ["Rescources"](https://kjensen37.github.io/08-Rescources/rescources/) section of the datasheet.
 To review my reflection of the project, you can review it in the ["Reflection"](https://kjensen37.github.io/09-Reflection/reflection/) section of the datasheet.
-
->Continue for all the remaining/missing sections.
-
