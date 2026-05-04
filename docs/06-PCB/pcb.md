@@ -15,11 +15,11 @@ Below are images of my top and bottom layers of the design of my PCB.
 
 ## PCB Top (No components)
 
-![](PCBBottom.png)
+![](IMG_4656.png)
 
 ## PCB Bottom (No components)
 
-![](PCBBottom.png)
+![](IMG_4657.png)
 
 ## PCB Top (With components)
 
